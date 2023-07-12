@@ -7,8 +7,7 @@
 The main goal is to provide subspace projection based iterative methods than can solve
 large-scale discrete linear inverse problems with regularization
 $$\min_{x\in\mathbb{R}^{n}}\{\|Ax-b\|_{2}^{2}+\lambda R(x)\},$$
-where $R(x)$ is the regularizer. It can be either a linear Tikhonov regularization term or 
-a nonlinear regularization term such as $L_p$ or TV regularization.
+where $R(x)$ is the regularizer. It can be either a linear Tikhonov regularization term or  a nonlinear regularization term such as $L_p$ or TV regularization.
 
 ## Code Structure
 * /Examples. It includes some test examples of 1D small-scale and 2D large-scale inverse problems to test the iterative regularization methods.
@@ -34,4 +33,5 @@ You are welcome to submit an issue for any questions related to InverProb_IterSo
 
 ## License
 If you use this code in any future publications, please cite this:
+
 Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization](https://arxiv.org/pdf/xx.pdf)."
