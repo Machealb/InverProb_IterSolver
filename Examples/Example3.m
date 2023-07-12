@@ -18,8 +18,9 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-path([directory, '/regu'], path)
-path([directory, '/IRtools-master'], path)
+%path([directory, '/regu'], path)
+%path([directory, '/IRtools-master'], path)
+addpath(genpath('..'))
 IRtools_setup;
 rng(2023); 
 
