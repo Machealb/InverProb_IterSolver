@@ -12,7 +12,8 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-path([directory, '/regu'], path)
+%path([directory, '/regu'], path)
+addpath(genpath('..'))
 rng(2023);  
 
 % test problems
