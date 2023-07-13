@@ -6,7 +6,9 @@
 * InverProb_IterSolver is a MATLAB code library for solving linear inverse problems with regularization.
 The main goal is to provide subspace projection based iterative methods than can solve
 large-scale discrete linear inverse problems with regularization
+
 $$\min_{x\in\mathbb{R}^{n}}\{\|Ax-b\|_{2}^{2}+\lambda R(x)\},$$
+
 where $R(x)$ is the regularizer. It can be either a linear Tikhonov regularization term or  a nonlinear regularization term such as $L_p$ or TV regularization.
 
 ## Code Structure
