@@ -21,7 +21,9 @@ where $R(x)$ is the regularizer. It can be either a linear Tikhonov regularizati
 
 ## Notice
 At this stage, this code should be used with the following two famous Inverse Problems solver packages:
+
 [1]. P. C. Hansen, Regularization Tools version 4.0 for Matlab 7.3, Numer. Algor., 46 (2007), pp. 189-194.
+
 [2]. S. Gazzola, P. C. Hansen, and J. G. Nagy, IR Tools: A MATLAB package of iterative regularization methods and large-scale test problems, Numer. Algor., 81 (2019), pp. 773-811.
 
 
