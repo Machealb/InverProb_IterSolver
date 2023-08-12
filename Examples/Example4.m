@@ -93,8 +93,8 @@ title(['Best solution, $k_{0}$ = ',num2str(k0)],...
 set(gca,'fontsize',18)
 
 figure;
-PRshowx(X1(:,iterstop1+50), ProbInfo)
-title(['LC solution, $k$ = ',num2str(iterstop1+50)],...
+PRshowx(X1(:,iterstop1), ProbInfo)
+title(['LC solution, $k$ = ',num2str(iterstop1)],...
     'interpreter','latex','fontsize',18);
 set(gca,'fontsize',18)
 
