@@ -8,7 +8,6 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-%path([directory, '/regu'], path)
 addpath(genpath('..'))
 rng(2023);  
 
@@ -38,7 +37,6 @@ k = 20;
 er0 = zeros(k,1);
 er1 = zeros(k,1);
 er2 = zeros(k,1);
-er3 = zeros(k,1);
 
 [Z0, res0, ~, ~] = jbdqr(A, b, L1, k, tol, 1);
 [Q, R] = qr(C, 0);

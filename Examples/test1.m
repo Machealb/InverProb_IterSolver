@@ -8,7 +8,7 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-%path([directory, '/regu'], path)
+% path([directory, '/regu'], path)
 addpath(genpath('..'))
 IRtools_setup;
 rng(2023);  % 伪随机数种子

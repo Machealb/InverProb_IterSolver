@@ -18,8 +18,8 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-%path([directory, '/regu'], path)
-%path([directory, '/IRtools-master'], path)
+% path([directory, '/regu'], path)
+% path([directory, '/IRtools-master'], path)
 addpath(genpath('..'))
 IRtools_setup;
 rng(2023); 
@@ -41,7 +41,7 @@ xn = norm(x_true);
 eta = 1.001 * nel * norm(b_true);
 
 % compare pGKB reguarization methods
-tol1 = 1e-5;
+tol1 = 1e-6;
 k = 150;
 er1 = zeros(k,1);
 er2 = zeros(k,1);

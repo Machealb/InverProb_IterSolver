@@ -18,8 +18,8 @@
 clear, clc;
 directory = pwd;
 path(directory, path)
-%path([directory, '/regu'], path)
-%path([directory, '/IRtools-master'], path)
+% path([directory, '/regu'], path)
+% path([directory, '/IRtools-master'], path)
 addpath(genpath('..'))
 IRtools_setup;
 rng(2023); 
@@ -47,7 +47,7 @@ xn = norm(x_true);
 eta = 1.001 * nel * norm(b_true);
 
 % compare pGKB reguarization methods
-tol1 = 1e-5;
+tol1 = 1e-6;
 k = 200;
 er1 = zeros(k,1);
 er2 = zeros(k,1);
@@ -92,11 +92,11 @@ title(['Best solution, $k_{0}$ = ',num2str(k0)],...
     'interpreter','latex','fontsize',18);
 set(gca,'fontsize',18)
 
-figure;
-PRshowx(X1(:,iterstop1), ProbInfo)
-title(['LC solution, $k$ = ',num2str(iterstop1)],...
-    'interpreter','latex','fontsize',18);
-set(gca,'fontsize',18)
+% figure;
+% PRshowx(X1(:,iterstop1), ProbInfo)
+% title(['LC solution, $k$ = ',num2str(iterstop1+50)],...
+%     'interpreter','latex','fontsize',18);
+% set(gca,'fontsize',18)
 
 figure;
 PRshowx(X1(:,iterstop_DP), ProbInfo)
@@ -119,13 +119,19 @@ set(gca,'fontsize',18)
 
 figure;
 semilogy(1:k, er1, '->','Color','b','MarkerIndices',1:9:k,...
-    'MarkerSize',6,'MarkerFaceColor','b','LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor','b','LineWidth',1.5);
 hold on;
 semilogy(1:k, er2, '-s','Color',[1,0.47,0.1],'MarkerIndices',1:9:k,...
-    'MarkerSize',6,'MarkerFaceColor',[1.0,0.47,0.1],'LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor',[1.0,0.47,0.1],'LineWidth',1.5);
 hold on;
 semilogy(1:k, er3, '-o','Color','g','MarkerIndices',1:9:k,...
-    'MarkerSize',6,'MarkerFaceColor','g','LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor','g','LineWidth',1.5);
+hold on;
+semilogy(iterstop_DP, er1(iterstop_DP),'bo', 'MarkerSize',16, 'LineWidth',2)
+hold on;
+semilogy(iterstop2, er2(iterstop2),'o','Color',[1,0.47,0.1]', 'MarkerSize',16, 'LineWidth',2)
+hold on;
+semilogy(iterstop3, er3(iterstop3),'go', 'MarkerSize',16, 'LineWidth',2)
 xlabel('Iteration','fontsize',16);
 legend('pGKB\_SPR', 'pGKB\_HR, SU', 'pGKB\_HR, WGCV', 'Location', 'northeast','fontsize',16);
 ylabel('Relative error','fontsize',16);

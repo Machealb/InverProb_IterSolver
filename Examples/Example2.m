@@ -19,7 +19,7 @@ rng(2023);
 % test problems
 %[A,b_true,x_true] = gravity(1024);
 %[A,b_true,x_true] = heat(2048);  
-%[A, b_true, x_true] = deriv2(2000);  
+% [A, b_true, x_true] = deriv2(2000);  
 [A, b_true, x_true] = gauss1dsig(800, 10);  
 
 % add noise
@@ -28,7 +28,7 @@ b = AddNoise(b_true, 'gauss', nel);  % noisy data
 
 % prepare algorithms
 [m, n] = size(A);
-%L1 = get_l(n, 1); 
+% L1 = get_l(n, 1); 
 L1 = genLirn(x_true, '1dTV_0', 1e-6);
 p = size(L1, 1);
 C = [A; L1];
@@ -121,16 +121,23 @@ plot(l, X3(:,iterstop3),'r-', 'LineWidth', 2.0);
 legend('True solution', ['WGCV solution, $k$=',num2str(iterstop3)],'interpreter','latex','fontsize',20);
 ylim([-0.6 0.8]);
 
+
 %--------- convergence history -----------------
 figure;
 semilogy(1:k, er1, '->','Color','b','MarkerIndices',1:1:k,...
-    'MarkerSize',6,'MarkerFaceColor','b','LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor','b','LineWidth',1.5);
 hold on;
 semilogy(1:k, er2, '-s','Color',[1,0.47,0.1],'MarkerIndices',1:1:k,...
-    'MarkerSize',6,'MarkerFaceColor',[1.0,0.47,0.1],'LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor',[1.0,0.47,0.1],'LineWidth',1.5);
 hold on;
 semilogy(1:k, er3, '-o','Color','g','MarkerIndices',1:1:k,...
-    'MarkerSize',6,'MarkerFaceColor','g','LineWidth',1.5);
+    'MarkerSize',5,'MarkerFaceColor','g','LineWidth',1.5);
+hold on;
+semilogy(iterstop0, er1(iterstop0),'bo', 'MarkerSize',16, 'LineWidth',2)
+hold on;
+semilogy(iterstop2, er2(iterstop2),'o','Color',[1,0.47,0.1]', 'MarkerSize',16, 'LineWidth',2)
+hold on;
+semilogy(iterstop3, er3(iterstop3),'go', 'MarkerSize',16, 'LineWidth',2)
 xlabel('Iteration','fontsize',16);
 legend('pGKB\_SPR', 'pGKB\_HR, SU', 'pGKB\_HR, WGCV', 'Location', 'northeast','fontsize',16);
 ylabel('Relative error','fontsize',16);
