@@ -41,7 +41,7 @@ elseif strcmp(reg, '1dTV_0') || strcmp(reg, '1dTV_1')
     end
 elseif strcmp(reg, '2dTV')
     M = varargin{1};  
-    N = varargin{2};
+    N = varargin{2}; 
     if M*N ~= n
         error('The image and vectorized input does not much')
     end
@@ -88,13 +88,15 @@ elseif strcmp(reg, '2dTV')
         D2(i,i) = 1;
         D2(i,i+1) = -1;
     end
-    Dh = kron([D2; zeros(1,N)], eye(M));
-    Dv = kron(eye(N), [D1; zeros(1,M)]);
+    D1 = sparse(D1);   D2 = sparse(D2);
+    Dh = kron([D2; sparse(1,N)], speye(M));
+    Dv = kron(speye(N), [D1; sparse(1,M)]);
     s = f_tau((Dh*x).^2 + (Dv*x).^2);
     w_til = s.^(-1/4);
-    W_til = diag(w_til);
-    W = [W_til, zeros(n,n); zeros(n,n), W_til];
-    L = [W*Dh; W*Dv];
+    nn = length(w_til);
+    W_til = spdiags(w_til(:), 0, nn, nn);
+    W = [W_til, sparse(n,n); sparse(n,n), W_til];
+    L = W*[Dh; Dv];
     L = sparse(L);
 else
     error('Wrong regularization term')
