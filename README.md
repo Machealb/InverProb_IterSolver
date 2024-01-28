@@ -32,10 +32,10 @@ At this stage, this code should be used with the following two famous Inverse Pr
 ## Submit an issue
 You are welcome to submit an issue for any questions related to InverProb_IterSolver. 
 
+
 ## Here are some research papers using InverProb_IterSolver
-1. Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization](https://arxiv.org/pdf/xx.pdf)."
+1. Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization](https://arxiv.org/pdf/2308.06577.pdf)."
 
 ## License
 If you use this code in any future publications, please cite this:
-
-Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization](https://arxiv.org/pdf/xx.pdf)."
+Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization (https://arxiv.org/pdf/2308.06577.pdf)."
