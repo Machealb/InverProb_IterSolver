@@ -64,7 +64,7 @@ phi_bar = bbeta;
 rho_bar = B(1,1);
 z = zeros(m+p, 1);
 
-fprintf('Start update procedure ===========================================\n');
+
 for l = 1:k
     % Construct and apply orthogonal transformation.
     rrho = sqrt(rho_bar^2 + B(l+1,l)^2);

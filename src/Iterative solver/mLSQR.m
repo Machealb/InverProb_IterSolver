@@ -60,7 +60,8 @@ function [X, res, eta] = mLSQR(A, M, b, k, reorth, tol)
     fprintf('Start the mLSQR iteration ===============================================\n');
     bbeta = norm(b);
     u = b / bbeta;  U(:,1) = u;
-    r = A' * u;
+    % r = A' * u;
+    r = mvpt(A, u);  % A'*u
     if nargin == 6
         rz = pcg(M, r, tol, 2*n);  % can be obtained by solving M * rz = r iteratively, e.g., by CG
     else
@@ -79,7 +80,8 @@ function [X, res, eta] = mLSQR(A, M, b, k, reorth, tol)
     % The j-th step preconditioned Lanczos Bidiagonalization and mLSQR iteration
     for j = 1:k 
         % compute u in 2-inner product
-        s = A * z - alpha * u;
+        % s = A * z - alpha * u;
+        s = mvp(A, z) - alpha * u;  % mvp(A, z) is A*z
         if reorth == 1  % full reorthogonalization of u, in 2-inner product
             for i = 1:j 
                 s = s - U(:,i)*(U(:,i)'*s);
@@ -98,7 +100,8 @@ function [X, res, eta] = mLSQR(A, M, b, k, reorth, tol)
         u = s / beta;    U(:,j+1) = u;
         % compute z in M-inner product, z_i should be M-orthogonal
         % uu = M \ (A' * u); 
-        r = A' * u;
+        % r = A' * u;
+        r = mvpt(A, u);  % A'*u
         if nargin == 6
             uu = pcg(M, r, tol, 2*n);  % obtained by solving M * uu = r iteratively, e.g., by CG
         else
@@ -138,7 +141,8 @@ function [X, res, eta] = mLSQR(A, M, b, k, reorth, tol)
         x = x + (phi/rrho) * w;  
         X(:, j) = x;
         w = z - (theta/rrho) * w;
-        er = b - A*x;
+        % er = b - A*x;
+        er = b - mvp(A, x);
         res(j) = norm(er);
         eta(j) = norm(x);
     end

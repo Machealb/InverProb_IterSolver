@@ -55,7 +55,6 @@ fprintf('Start the pGKB iteration ===========================================\n'
 [bbeta, B, ~, Z] = pGKB(A, b, M, alpha, k, tol, reorth);
 
 % Intialiazation
-[~, n] = size(A);
 X = zeros(n, k);  
 res = zeros(k,1);   
 eta = zeros(k,1); 

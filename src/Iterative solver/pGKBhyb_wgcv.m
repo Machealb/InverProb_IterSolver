@@ -99,7 +99,8 @@ for i = 1:k
   if terminate && warning && i > step1
     l = i - step1;
     if GCV(l) < min(GCV(l+1:i))  
-      iterstop = l;  % stop at the minimum GCV to avoid possible semi-convergence      terminate = 0;
+      iterstop = l;  % stop at the minimum GCV to avoid possible semi-convergence      
+      terminate = 0;
     end
   end
   % If GCV curve is flat, we stop and avoid bumps in the GCV curve by using a window of step2+1 iterations 
