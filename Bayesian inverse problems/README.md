@@ -1,9 +1,6 @@
 # Subspace projection regularization for large-scale Bayesian inverse problems
 
 
-
-
-
 ## Code Structure
 * /Examples. It includes some test examples of 1D small-scale and 2D large-scale inverse problems to test the iterative regularization methods.
 * /src. The source codes. 
@@ -24,3 +21,10 @@ You are welcome to submit an issue for any questions related to InverProb_IterSo
 ## License
 If you use this code in any future publications, please cite this:
 Haibo Li. "[Subspace projection regularization for large-scale Bayesian inverse problems](https://arxiv.org/pdf/xx.pdf)."
+
+
+
+# Projected Newton method for large-scale Bayesian linear inverse problems
+
+## Code Structure 
+* See the file /Projected Newton method
