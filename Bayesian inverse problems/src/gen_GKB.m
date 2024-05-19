@@ -54,11 +54,11 @@ function [bbeta, B, U, V, Vb] = gen_GKB(A, b, M, N, k, tol, reorth)
         error('Not Enough Inputs')
     end
 
-    if isa(A, 'function_handle') && tol == 0
-        error('Tol must not be 0 for a funtional handel A')
-    end
+    % if isa(A, 'function_handle') && tol == 0
+    %     error('Tol must not be 0 for a funtional handel A')
+    % end
 
-    [m, n] = sizem1(A); 
+    [m, n] = sizem(A); 
     if size(M,2) == 1 && size(M,1) ~= m 
         error('The dimension of diagonal matrix M is not consistent with A')
     end
@@ -90,7 +90,7 @@ function [bbeta, B, U, V, Vb] = gen_GKB(A, b, M, N, k, tol, reorth)
     u = b / bbeta;  U(:,1) = u;
     ub = sb / bbeta;  Ub(:,1) = ub;
 
-    rb = A' * ub;  r = N * rb;
+    rb = mvpt(A, ub);  r = N * rb;
     alpha = sqrt(rb'*r);
     vb = rb / alpha;  Vb(:,1) = vb;
     v  = r / alpha;   V(:,1) = v;
@@ -127,7 +127,7 @@ function [bbeta, B, U, V, Vb] = gen_GKB(A, b, M, N, k, tol, reorth)
         end
         beta = sqrt(sb'*s);
         u = s / beta;  U(:,j+1) = u;
-        ub = sb / beta;  Ub(:,j+1) = ub;
+        ub = sb / beta;  Ub(:,1+1) = ub;
         B(j+1,j) = beta;
 
         % compute v in N^{-1}-inner product, v_i should be N^{-1}-orthogonal
