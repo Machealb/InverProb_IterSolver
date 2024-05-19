@@ -19,7 +19,7 @@ IRtools_setup;
 rng(2023); 
 
 % create image data
-n = 64;
+n1 = 128;
 options.phantomImage = 'smooth';
 % options.BlurLevel = 'mild';
 % options.BC = 'zero';
@@ -29,16 +29,15 @@ a1 = 1;  a2 = n;  b1 = 1;  b2 = n;
 N1 = ProbInfo.xSize(1);  N2 = ProbInfo.xSize(2); 
 
 % add noise
-nel = 2e-2; % Noise level
-[e, Sigma] = genNoise(b_true, nel, 'white');
+nel = 1e-2; % Noise level
+[e, Sigma] = genNoise(b_true, nel, 'nonwt');
 b = b_true + e;
 [~, NoiseInfo] = PRnoise(b_true, nel);  % obtain NoiseInfo
 
 % prepare algorithms
 [m, n] = size(A);
 M = diag(Sigma);
-N = gen_kernel2d(a1, a2, b1, b2, n, 'matern', 1, 0.5);
-% N = N + 1e-10*eye(n);
+N = gen_kernel2d(a1, a2, b1, b2, n1, 'matern', 500, 0.5);
 tau = 1.01;
 reorth = 1;
 tol = 0;
