@@ -22,13 +22,13 @@ rng(2023);
 
 
 % Define test problem
-n = 128;                          % Problem size.
-options = PRset('Tfinal', 0.01, 'Tsteps', 100);
+n1 = 128;                          % Problem size.
+options = PRset('Tfinal', 0.005, 'Tsteps', 100);
 [A, b_true, x_true, ProbInfo] = PRdiffusion(n, options);        % Get the test problem.
 a1 = 0;  a2 = 1;  b1 = 0;  b2 = 1;
 
 % add noise
-nel = 5e-3; % Noise level
+nel = 1e-3; % Noise level
 [e, Sigma] = genNoise(b_true, nel, 'white');
 b = b_true + e;
 [~, NoiseInfo] = PRnoise(b_true, nel);  % obtain NoiseInfo
@@ -36,8 +36,7 @@ b = b_true + e;
 % prepare algorithms
 [m, n] = sizem1(A);
 M = diag(Sigma);
-N = gen_kernel2d(a1, a2, b1, b2, n, 'gauss', 0.5);
-N = N + 1e-10*eye(n);
+N = gen_kernel2d(a1, a2, b1, b2, n1, 'matern', 0.05, 2.5);
 tau = 1.01;
 reorth = 1;
 tol = 0;
