@@ -28,9 +28,9 @@ You are welcome to submit an issue for any questions related to InverProb_IterSo
 
 
 ## Here are some research papers using InverProb_IterSolver
-1. Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization](https://arxiv.org/pdf/2308.06577.pdf)."
+1. Haibo Li. "[A preconditioned Krylov subspace method for linear inverse problems with general-form Tikhonov regularization. SIAM Journal on Scientific Computing, 46(4), A2607–A2633.](https://doi.org/10.1137/23M1593802)."
 2. Haibo Li. "[Subspace projection regularization for large-scale Bayesian linear inverse problems](https://arxiv.org/pdf/2310.18618.pdf)."
-3. Haibo Li. "[Projected Newton method for large-scale Bayesian linear inverse problems](xxx)."
+3. Haibo Li. "[Projected Newton method for large-scale Bayesian linear inverse problems](https://arxiv.org/abs/2403.01920)."
 ## License
 If you use this code in any future publications, please cite like this:
 
