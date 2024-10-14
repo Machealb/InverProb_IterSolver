@@ -1,7 +1,10 @@
-function [X, res, nx, nh, lamb] = PNT(A, b, M, N, k, lamb0, tol)
+function [X, res, nx, nh, lamb] = Ch_PNT(A, b, M, N, k, lamb0, tol)
 %  Projected Newton method for solving the Bayesian linear inverse problems 
 %  by noise constrained Tikhonov regularization:
 %  problem:   min ||x||_{N^-1}^2 s.t.  ||Ax - b||_{M^-1}^2 <= \tau*m. 
+% 
+%  First compute the Cholesky factorization of N^{-1} and M^{-1} to get 
+%  the 2-norm problem, then use the 2-norm PNT method.
 %
 %  Inputs:
 %   A: either (a) a full or sparse mxn matrix;
@@ -20,8 +23,8 @@ function [X, res, nx, nh, lamb] = PNT(A, b, M, N, k, lamb0, tol)
 %   nh: vector containing ||h(x_k,lambda_k)||_2 for different iterates
 %   lamb: vector containing the lagrange multiplier iterates
 %
-%  Haibo Li, School of Mathematics and Statistics, University of Melbourne
-%  29, Feb, 2024.
+%  Haibo Li, School of Mathematics and Statistics, The University of Melbourne
+%  12, Oct, 2024.
 
 % Check for acceptable number of input arguments
 if nargin < 7
@@ -47,97 +50,79 @@ y      = [];
 lambda = lamb0;      % set lamb0=0.1 is good
 c      = 1e-4;       % small parameter for the sufficient decrease linesearch
 eta    = 0.9;        % ratio for gradually decreasing step-length
-tol_gGKB = 0;        % tolerance of inner iterations of genGKB for M^{-1}v   
-reorth   = 2;        % apply full reorthogonaliation to genGKB
+reorth = 2;        % apply full reorthogonaliation to genGKB
 
 U  = []; 
 V  = []; 
-Ub = [];
-Vb = [];
 B  = [];
 
 % compute the inverse of M directly if M is diagonal
 if size(M,2) == 1
     dm = 1.0 ./ M;
-    M_inv = sparse(diag(dm));
-end
-
-% start iteration of gen-GKB, compute u_1, v_1
-if tol_gGKB == 0
-    if size(M,2) == 1
-        sb = M_inv * b;   % if M is diagonal, it should be computed element-wise
-    else
-        sb = M \ b;  
-    end
+    Lm = sparse(diag(sqrt(dm)));  % Cholesky factor of M^{-1}
 else
-    sb = pcg(M, b, tol, 2*n);
+    M_inv = inv(M);
+    Lm = chol(M_inv);
 end
 
-bbeta = sqrt(sb'*b);
-u = b / bbeta;    U(:,1) = u;
-ub = sb / bbeta;  Ub(:,1) = ub;
+b1 = Lm * b;
 
-rb = A' * ub;     r = N * rb;
-alpha = sqrt(rb'*r);
-vb = rb / alpha;  Vb(:,1) = vb;
+Ln  = chol(N);
+Ln1 = Ln';
+
+% A1 = Lm * A * Ln1;   % if A is not explicitly know, this can not compute
+
+% start iteration of GKB, compute u_1, v_1
+bbeta = norm(b1);
+u = b1 / bbeta;    U(:,1) = u;
+r = Ln * mvpt(A, Lm'*u);  % A1'*u
+alpha = norm(r);
 v  = r / alpha;   V(:,1) = v;
 B(1,1) = alpha;
 
 
-% start iteration of PNT (includes genGKB)
+% start iteration of PNT 
 for j = 1:k
-    fprintf('Running PNT: the %d-th step ----\n', j);
-    % compute u in M^{-1}-inner product, u_i should be M^{-1}-orthogonal
-    s = mvp(A, v) - alpha * u;  % mvp(A, v) is A*v
+    fprintf('Running Ch-PNT: the %d-th step ----\n', j);
+    % compute u in 2-inner product, u_i should be 2-orthogonal
+    s = Lm * mvp(A, Ln1*v) - alpha * u;  % mvp(A, v) is A*v
     if reorth == 1  % full reorthogonalization of u
         for i = 1:j 
-            s = s - U(:,i)*(Ub(:,i)'*s);
+            s = s - U(:,i)*(U(:,i)'*s);
         end
     elseif reorth == 2  % double reorthogonalization of u
         for i = 1:j 
-            s = s - U(:,i)*(Ub(:,i)'*s);
+            s = s - U(:,i)*(U(:,i)'*s);
         end
         for i = 1:j 
-            s = s - U(:,i)*(Ub(:,i)'*s);
+            s = s - U(:,i)*(U(:,i)'*s);
         end
     else
         % pass
     end
 
-    if tol_gGKB == 0
-        if size(M,2) == 1
-            sb = M_inv * s;  % if M is diagonal, it should be computed element-wise
-        else
-            sb = M \ s;  
-        end
-    else
-        sb = pcg(M, s, tol, 2*n);
-    end
-    beta = sqrt(sb'*s);
+    beta = norm(s);
     u  = s / beta;   U(:,j+1) = u;
-    ub = sb / beta;  Ub(:,j+1) = ub;
     B(j+1,j) = beta;
 
-    % compute v in N^{-1}-inner product, v_i should be N^{-1}-orthogonal
-    rb = mvpt(A, ub) - beta*vb;
+    % compute v in 2-inner product, v_i should be 2-orthogonal
+    r = Ln * mvpt(A, Lm'*u) - beta*v;
     if reorth == 1  % full reorthogonalization of u
         for i = 1:j 
-            rb = rb - Vb(:,i)*(V(:,i)'*rb);
+            r = r - V(:,i)*(V(:,i)'*r);
         end
     elseif reorth == 2  % double reorthogonalization of u
         for i = 1:j 
-            rb = rb - Vb(:,i)*(V(:,i)'*rb);
+            r = r - V(:,i)*(V(:,i)'*r);
         end
         for i = 1:j 
-            rb = rb - Vb(:,i)*(V(:,i)'*rb);
+            r = r - V(:,i)*(V(:,i)'*r);
         end
     else
         % pass
     end
 
-    r     = N * rb;
-    alpha = sqrt(rb'*r);
-    vb    = rb / alpha;  Vb(:,j+1) = vb;
+    alpha = norm(r);
     v     = r / alpha;   V(:,j+1) = v;  
     B(j+1,j+1) = alpha;
 
@@ -182,7 +167,7 @@ for j = 1:k
         rjbar = Bjbar*y_new-bbeta*e1;
         Fjbar = [lambda_new*Bjbar'*rjbar+y_new; 0.5*sum(rjbar.^2)-0.5*tau_m];
         if (gamma < 1e-16)
-            warning('Stepsize too small. Projected Newton method stopped.')
+            warning('Stepsize too small. Ch-PNT method stopped.')
             X    = X(:,1:j-1);
             res  = res(1:j-1);
             nx   = nx(1:j-1);
@@ -197,20 +182,19 @@ for j = 1:k
     x      = V(:,1:j)*y;
 
     lamb(j)= lambda;
-    X(:,j) = x;
+    X(:,j) =  Ln1 * x;
     res(j) = norm(Bj*y-bbeta*e1);
     nx(j)  = norm(y);
     nh(j)  = 0.5 * sum(Fjbar.^2);
 
-    % if abs(res(j)^2-tau_m) <= 1e-8 && flag == 1
-    if (res(j)^2-tau_m)/tau_m <= 1e-4 && flag == 1
+    if abs(res(j)^2-tau_m) <= 1e-8 && flag == 1
         toc 
         flag = 0;
     end 
     
     if(nh(j) < tol)
         disp(['-----------------------------------']);
-        disp(['---- Projected Newton CONVERGED in iteration ',num2str(j), ' ----']);
+        disp(['---- Ch-PNT CONVERGED in iteration ',num2str(j), ' ----']);
         disp(['-----------------------------------'])    ;    
         break
     end
@@ -219,7 +203,7 @@ end
 
 if(j == k)
     disp(['-----------------------------------']);
-    disp(['------- Projected Newton NOT CONVERGED --------']);
+    disp(['------- Ch-PNT NOT CONVERGED --------']);
     disp(['-----------------------------------']);
 end
 
