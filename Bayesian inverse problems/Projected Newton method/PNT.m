@@ -202,8 +202,8 @@ for j = 1:k
     nx(j)  = norm(y);
     nh(j)  = 0.5 * sum(Fjbar.^2);
 
-    % if abs(res(j)^2-tau_m) <= 1e-8 && flag == 1
-    if (res(j)^2-tau_m)/tau_m <= 1e-4 && flag == 1
+    if abs(res(j)^2-tau_m) <= 1e-8 && flag == 1
+    % if (res(j)^2-tau_m)/tau_m <= 1e-4 && flag == 1
         toc 
         flag = 0;
     end 
