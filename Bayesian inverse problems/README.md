@@ -17,6 +17,7 @@ You are welcome to submit an issue for any questions related to InverProb_IterSo
 
 ## Here are some research papers using InverProb_IterSolver
 1. Haibo Li. "[Subspace projection regularization for large-scale Bayesian inverse problems](https://arxiv.org/abs/2310.18618)."
+2. Haibo Li. "[Projected Newton method for large-scale Bayesian linear inverse problems](https://arxiv.org/abs/2403.01920)."
 
 ## License
 If you use this code in any future publications, please cite this:
