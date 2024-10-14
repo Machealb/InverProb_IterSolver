@@ -16,7 +16,7 @@ At this stage, this code should be used with the following two famous Inverse Pr
 You are welcome to submit an issue for any questions related to InverProb_IterSolver. 
 
 ## Here are some research papers using InverProb_IterSolver
-1. Haibo Li. "[Subspace projection regularization for large-scale Bayesian inverse problems]([https://arxiv.org/pdf/xx.pdf](https://arxiv.org/abs/2310.18618))."
+1. Haibo Li. "[Subspace projection regularization for large-scale Bayesian inverse problems](https://arxiv.org/abs/2310.18618)."
 
 ## License
 If you use this code in any future publications, please cite this:
